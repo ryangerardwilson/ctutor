@@ -71,7 +71,7 @@
 // Width pads with spaces (right-aligned); 0 flag pads with zeros. Precision? For floats, it's post-decimal digits;
 // for %d/%ld, it's minimum digits (pads with zeros if less). Don't be a clown—match types or watch it barf.
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     char name[10] = "Linus";  
@@ -89,7 +89,7 @@ int main() {
     printf("Plain height: %f\n", height);                // "5.110000"
     printf("2 decimals: %.2f\n", height);                // "5.11"
     printf("Width 6, 2 dec: %6.2f\n", height);           // "  5.11" (right-aligned).
-    printf("Zero-pad float: %08.2f\n", height);          // "0005.11" (zeros, but watch the dot eat space).
+    printf("Zero-pad float: %08.2f\n", height);          // "0005.11" (zeros, but dots eat space).
 
     printf("Plain pi: %lf\n", pi);                       // "3.141590"
     printf("Plain net: %ld\n", net_worth);               // "1000000000000"
@@ -114,13 +114,24 @@ int main() {
 
 
 // Lesson 1.2: BASIC ARITHMETIC EXPRESSIONS
-// K&R 1.4-1.5: Compute 2 + 2 * 3 / 4 - 1 (should be 1.5 with floats), print it
+// K&R 1.4-1.5: Understanding operator precedence in expressions.
+// In C, operators have a strict order of precedence (like most sane languages):
+// 1. Parentheses () override everything—evaluate inside first.
+// 2. Multiplication (*) and division (/) next, left-to-right associativity.
+// 3. Addition (+) and subtraction (-) last, also left-to-right.
+// No parentheses? The compiler doesn't care about your "natural" order; it follows this hierarchy.
+// Example: Compute 2 * (2 + 3) / 4.0 - 1
+// Step-by-step (with floats for precision):
+// - First: 2 + 3 = 5
+// - Then: 5 / 4.0 = 1.25
+// - Then: 2 * 1.25 = 2.5
+// - Finally: 2.5 - 1 = 1.5
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     double result;  
-    result = 2 + 2 * 3 / 4.0 - 1; 
+    result = 2 * (2 + 3) / 4.0 - 1; 
     printf("%f\n", result);
     return 0;
 }
@@ -144,10 +155,11 @@ int main() {
 
 
 
+
 // Lesson 1.3: FOR LOOP - REPEAT WITHOUT BEING A LOOP IDIOT
 // K&R 1.6? Nah, but basics: Loop from 0 to 9, print i*i
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     int i;
@@ -170,7 +182,7 @@ int main() {
 // Lesson 1.4: IF-ELSE - DECISIONS, NOT RANDOM CRAP
 // K&R 1.7ish: Set int age=25; if age>=18 printf("Adult\n"); else printf("Kid\n");
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     int age = 25;
@@ -195,7 +207,7 @@ int main() {
 // Lesson 1.5: WHILE LOOP - UNTIL YOU'RE DONE, YOU PIG
 // K&R 1.8? Loop while c != EOF, but simple: count chars in string "hello"
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     char s[] = "hello";
@@ -226,12 +238,12 @@ int main() {
 // Step 1: Manual loop-zero (feel the burn). 
 // Step 2: Concise {0}. 
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     int i;
     // MANUAL LOOP-ZERO
-    printf("\n--- MANUAL LOOP-ZERO: EARN YOUR ZEROS ---\n");
+    printf("\n--- MANUAL LOOP-ZERO ---\n");
     int marr[5];
     for (i = 0; i < 5; i++) {
         marr[i] = 0;
@@ -243,8 +255,9 @@ int main() {
         msum += marr[i];
     }
     printf("\nManual zero sum: %d (boring but correct)\n", msum);
+    
     // NOW THE CONCISE WAY
-    printf("\n--- CONCISE {0}: LAZY BUT SMART ---\n");
+    printf("\n--- CONCISE {0} ---\n");
     int carr[5] = {0}; // Magic: First 0 propagates to all.
     int csum = 0;
     printf("Concise-zeroed array: ");
@@ -272,7 +285,7 @@ int main() {
 // Lesson 1.7: FUNCTIONS - REUSE CODE, DON'T COPY-PASTE LIKE AN AMATEUR
 // K&R 1.10? Def simple add(int a, int b) { return a+b; } then main calls and prints add(3,4)
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int add(int a, int b) {
     // Fix: return sum
@@ -297,7 +310,7 @@ int main() {
 // Lesson 1.8: SCANF - READ INPUT, DON'T HARDWIRE EVERYTHING
 // K&R 1.11? Prompt for name with scanf, print "Hello, %s"
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     char name[20];
