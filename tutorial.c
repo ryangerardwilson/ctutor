@@ -53,27 +53,7 @@
     no? Do this per lesson—keeps shit isolated, no global link-time fuckups.
 */
 
-// Uncomment and edit as you go—compile after each: gcc tutorial.c -o ctutor && ./ctutor
-// Errors? Good, learn from 'em. No errors? You're cheating or lying.
-// ===== LESSON 1.1: GETTING STARTED - HELLO WORLD OR GTFO =====
-// K&R 1.1: Write a program to print "hello, world".
-/*
-#include <stdio.h>
-
-int main() {
-    printf("Fix me, asshole.\n");
-    return 0;
-}
-*/
-
-
-
-
-
-
-
-
-// Lesson 1.2: VARIABLES AND ASSIGNMENT AND FORMATTING
+// Lesson 1.1: VARIABLES, ASSIGNMENT AND FORMATTING
 // K&R 1.2-1.3: Declare variables of different types, assign values, and print 'em
 // like you mean it. Strings? Pfft, not a real type—see below.
 
@@ -101,13 +81,10 @@ int main() {
     long net_worth = 1000000000000L;  
 
     printf("Plain name: %s\n", name);                    // "Linus"
-    printf("Padded name: %10s\n", name);                 // "     Linus" (right-aligned, spaces).
-    printf("Left-padded name: %-10s\n", name);           // "Linus     " (left-aligned).
 
     printf("Plain age: %d\n", age);                      // "55"
     printf("Width 3 age: %3d\n", age);                   // " 55" (spaces).
     printf("Zero-pad age: %03d\n", age);                 // "055"
-    printf("Precision 3 age: %.3d\n", age);              // "055" (zeros if short).
 
     printf("Plain height: %f\n", height);                // "5.110000"
     printf("2 decimals: %.2f\n", height);                // "5.11"
@@ -115,13 +92,7 @@ int main() {
     printf("Zero-pad float: %08.2f\n", height);          // "0005.11" (zeros, but watch the dot eat space).
 
     printf("Plain pi: %lf\n", pi);                       // "3.141590"
-    printf("0 decimals: %.0lf\n", pi);                   // "3"
-    printf("Width 3, 0 dec: %3.0lf\n", pi);              // "  3" (spaces).
-    printf("Left-align: %-3.0lf\n", pi);                 // "3  "
-
     printf("Plain net: %ld\n", net_worth);               // "1000000000000"
-    printf("Width 12 net: %12ld\n", net_worth);          // Right-padded if short, but this overflows—your problem.
-    printf("Precision 5 net: %.5ld\n", net_worth % 100000);  // Modulo to not spam; "00000" if small.
 
     return 0;
 }
@@ -142,7 +113,7 @@ int main() {
 
 
 
-// Lesson 1.3: BASIC ARITHMETIC EXPRESSIONS
+// Lesson 1.2: BASIC ARITHMETIC EXPRESSIONS
 // K&R 1.4-1.5: Compute 2 + 2 * 3 / 4 - 1 (should be 1.5 with floats), print it
 /*
 #include <stdio.h>
@@ -173,7 +144,7 @@ int main() {
 
 
 
-// Lesson 1.4: FOR LOOP - REPEAT WITHOUT BEING A LOOP IDIOT
+// Lesson 1.3: FOR LOOP - REPEAT WITHOUT BEING A LOOP IDIOT
 // K&R 1.6? Nah, but basics: Loop from 0 to 9, print i*i
 /*
 #include <stdio.h>
@@ -196,7 +167,7 @@ int main() {
 
 
 
-// Lesson 1.5: IF-ELSE - DECISIONS, NOT RANDOM CRAP
+// Lesson 1.4: IF-ELSE - DECISIONS, NOT RANDOM CRAP
 // K&R 1.7ish: Set int age=25; if age>=18 printf("Adult\n"); else printf("Kid\n");
 /*
 #include <stdio.h>
@@ -221,7 +192,7 @@ int main() {
 
 
 
-// Lesson 1.6: WHILE LOOP - UNTIL YOU'RE DONE, YOU PIG
+// Lesson 1.5: WHILE LOOP - UNTIL YOU'RE DONE, YOU PIG
 // K&R 1.8? Loop while c != EOF, but simple: count chars in string "hello"
 /*
 #include <stdio.h>
@@ -246,20 +217,42 @@ int main() {
 
 
 
-// Lesson 1.7: ARRAYS - LISTS OF CRAP, DON'T OVERFLOW YOU MORON
-// K&R 1.9: int array[5] = {1,2,3,4,5}; sum 'em and print
+// Lesson 1.6: ARRAYS - LISTS OF STUFF, DON'T OVERFLOW YOU MORON (Restructured: 
+// Manual Loop-Zero First, Then Concise)
+
+// Truth bomb: Local arrays spawn as garbage. Manual loop teaches pain; {0} is 
+// the shortcut for sane people.
+
+// Step 1: Manual loop-zero (feel the burn). 
+// Step 2: Concise {0}. 
 /*
 #include <stdio.h>
 
 int main() {
-    int array[5] = {1, 2, 3, 4, 5};
-    int sum = 0;
     int i;
+    // MANUAL LOOP-ZERO
+    printf("\n--- MANUAL LOOP-ZERO: EARN YOUR ZEROS ---\n");
+    int marr[5];
     for (i = 0; i < 5; i++) {
-        // Fix: add to sum
-        sum += array[i];
+        marr[i] = 0;
     }
-    printf("Sum: %d\n", sum);
+    int msum = 0;
+    printf("Manual-zeroed array: ");
+    for (i = 0; i < 5; i++) {
+        printf("%d ", marr[i]);
+        msum += marr[i];
+    }
+    printf("\nManual zero sum: %d (boring but correct)\n", msum);
+    // NOW THE CONCISE WAY
+    printf("\n--- CONCISE {0}: LAZY BUT SMART ---\n");
+    int carr[5] = {0}; // Magic: First 0 propagates to all.
+    int csum = 0;
+    printf("Concise-zeroed array: ");
+    for (i = 0; i < 5; i++) {
+        printf("%d ", carr[i]);
+        csum += carr[i];
+    }
+    printf("\nConcise zero sum: %d (same result, less typing)\n", csum);
     return 0;
 }
 */
@@ -273,7 +266,10 @@ int main() {
 
 
 
-// Lesson 1.8: FUNCTIONS - REUSE CODE, DON'T COPY-PASTE LIKE AN AMATEUR
+
+
+
+// Lesson 1.7: FUNCTIONS - REUSE CODE, DON'T COPY-PASTE LIKE AN AMATEUR
 // K&R 1.10? Def simple add(int a, int b) { return a+b; } then main calls and prints add(3,4)
 /*
 #include <stdio.h>
@@ -298,7 +294,7 @@ int main() {
 
 
 
-// Lesson 1.9: SCANF - READ INPUT, DON'T HARDWIRE EVERYTHING
+// Lesson 1.8: SCANF - READ INPUT, DON'T HARDWIRE EVERYTHING
 // K&R 1.11? Prompt for name with scanf, print "Hello, %s"
 /*
 #include <stdio.h>
