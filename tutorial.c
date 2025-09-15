@@ -137,7 +137,6 @@ int main() {
 
 
 // Lesson 1.2: BASIC ARITHMETIC EXPRESSIONS
-// K&R 1.4-1.5: Understanding operator precedence in expressions.
 // In C, operators have a strict order of precedence (like most sane languages):
 // 1. Parentheses () override everything—evaluate inside first.
 // 2. Multiplication (*) and division (/) next, left-to-right associativity.
@@ -180,7 +179,6 @@ int main() {
 
 
 // Lesson 1.3: FOR LOOP - REPEAT WITHOUT BEING A LOOP IDIOT
-// K&R 1.6? Nah, but basics: Loop from 0 to 9, print i*i
 /*
 #include "stdio.h"
 
@@ -203,7 +201,6 @@ int main() {
 
 
 // Lesson 1.4: IF-ELSE - DECISIONS, NOT RANDOM CRAP
-// K&R 1.7ish: Set int age=25; if age>=18 printf("Adult\n"); else printf("Kid\n");
 /*
 #include "stdio.h"
 
@@ -228,7 +225,6 @@ int main() {
 
 
 // Lesson 1.5: WHILE LOOP - UNTIL YOU'RE DONE, YOU PIG
-// K&R 1.8? Loop while c != EOF, but simple: count chars in string "hello"
 /*
 #include "stdio.h"
 
@@ -304,7 +300,6 @@ int main() {
 
 
 // Lesson 1.7: FUNCTIONS - REUSE CODE, DON'T COPY-PASTE LIKE AN AMATEUR
-// K&R 1.10? Def simple add(int a, int b) { return a+b; } then main calls and prints add(3,4)
 /*
 #include "stdio.h"
 
@@ -329,7 +324,6 @@ int main() {
 
 
 // Lesson 1.8: SCANF - READ INPUT, DON'T HARDWIRE EVERYTHING
-// K&R 1.11? Prompt for name with scanf, print "Hello, %s"
 /*
 #include "stdio.h"
 
