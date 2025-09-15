@@ -258,37 +258,35 @@ int main() {
 // Truth bomb: Local arrays spawn as garbage. Manual loop teaches pain; {0} is 
 // the shortcut for sane people.
 
-// Step 1: Manual loop-zero (feel the burn). 
-// Step 2: Concise {0}. 
+// Step 1: Manually zero the array (feel the burn). 
+// Step 2: Concisely zero the array {0}. 
 /*
 #include "stdio.h"
 
 int main() {
     int i;
-    // MANUAL LOOP-ZERO
-    printf("\n--- MANUAL LOOP-ZERO ---\n");
+    // manually zeroed array
     int marr[5];
     for (i = 0; i < 5; i++) {
         marr[i] = 0;
     }
     int msum = 0;
-    printf("Manual-zeroed array: ");
+    printf("Manually-zeroed array: ");
     for (i = 0; i < 5; i++) {
         printf("%d ", marr[i]);
         msum += marr[i];
     }
-    printf("\nManual zero sum: %d (boring but correct)\n", msum);
+    printf("\nManually-zeroed sum: %d\n", msum);
     
-    // NOW THE CONCISE WAY
-    printf("\n--- CONCISE {0} ---\n");
+    // concisely zeroed array
     int carr[5] = {0}; // Magic: First 0 propagates to all.
     int csum = 0;
-    printf("Concise-zeroed array: ");
+    printf("Concisely-zeroed array: ");
     for (i = 0; i < 5; i++) {
         printf("%d ", carr[i]);
         csum += carr[i];
     }
-    printf("\nConcise zero sum: %d (same result, less typing)\n", csum);
+    printf("\nConcisely-zeroed sum: %d\n", csum);
     return 0;
 }
 */
