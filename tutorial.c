@@ -279,7 +279,7 @@ int main() {
     printf("\nManually-zeroed sum: %d\n", msum);
     
     // concisely zeroed array
-    int carr[5] = {0}; // Magic: First 0 propagates to all.
+    int carr[5] = {0}; // 0 propagates to all.
     int csum = 0;
     printf("Concisely-zeroed array: ");
     for (i = 0; i < 5; i++) {
