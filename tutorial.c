@@ -94,10 +94,8 @@
 //   your program's gonna puke undefined behavior all over your screen. Don't be that clown.
 
 /*
-// man k --> shows the index of the c lang manual. in the man commands below
-//           we add the index after man, else we will not get precise search
-//           results.
-#include <stdio.h>  // man 7 stdio
+// man 7 man-pages --> spells out what every section in the man pages is for
+#include "stdio.h"  // man 3 stdio
 
 int main() {
     char name[10] = "Linus";  // man 3 strlen
@@ -118,7 +116,7 @@ int main() {
     printf("Pi: %lf\n", pi);            // Not %f—man says %lf.
     printf("Worth: %ld\n", net_worth);  // Big nums need %ld.
 
-    return 0;  // man 3 exit
+    return 0; 
 }
 */
 
