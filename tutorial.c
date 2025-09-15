@@ -54,49 +54,74 @@
 */
 
 // Lesson 1.1: VARIABLES, ASSIGNMENT AND FORMATTING
-// K&R 1.2-1.3: Declare variables of different types, assign values, and print 'em
-// like you mean it. Strings? Pfft, not a real type—see below.
+// - **Lesson 1.1: Variables, Assignment, and Formatting**
+//   Straight from K&R sections 1.2-1.3: Declare variables of different types, slap
+//   values into 'em, and print that shit properly. No half-assing it.
+//
+// - **Strings? What a joke.**
+//   In C, strings aren't a real goddamn data type, you naive fool. They're just arrays
+//   of chars, null-terminated if you don't want your program to crash like a bad hangover.
+//
+// - **int: For your basic whole-number bullshit.**
+//   No fractions here—just integers. Simple, fast, and won't lie to you about decimals.
+//
+// - **float: Decimals, but don't trust 'em blindly.**
+//   Floating-point numbers for when you need fractions, but precision is a myth—it's
+//   approximate as hell. Use it for quick and dirty calc, but expect rounding errors to bite
+//   you in the ass.
+//
+// - **char: A single byte pretending to be special.**
+//   Basically a tiny int for one character. Don't overthink it; it's glorified ASCII.
+//
+// - **double: Float on steroids.**
+//   Beefed-up float with 64 bits of double-precision glory instead of float's wimpy 32. Use
+//   doubles when your calculations need actual accuracy—don't be the idiot who uses float for
+//   anything serious and ends up with drunk-monkey math. Otherwise, save the memory and stick
+//   to float, you hog.
+//
+// - **long int: For when ints feel too small.**
+//   Bigger integers for your massive numbers or oversized ego. Print 'em with %ld, moron, or
+//   watch it all go to shit.
+//
+// - **Pro Tip: printf Formatting Magic**
+//   The format string is %[flags][width][.precision][length]type.
+//   - Example: %6.2f — Total width 6 (padded with spaces on the left, right-aligned), 2 digits
+//   after decimal for floats.
+//   - Width: Pads with spaces by default; slap a 0 flag (%06d) for zero-padding.
+//   - Precision: For floats, it's post-decimal digits; for %d or %ld, it's minimum digits
+//   (pads with zeros if short).
+//   - Golden Rule: Match the type exactly (%d for int, %f for float, %ld for long, etc.), or
+//   your program's gonna puke undefined behavior all over your screen. Don't be that clown.
 
-// In C, a string ain't a real data type, dipshit. We got ints for integers (whole numbers,
-// no fractions), floats for floating-point crap (decimals, but watch the precision, it's a lie),
-// chars (glorified ints for single bytes), and doubles—oh yeah, doubles are just beefed-up floats
-// with more bits for your decimal-loving ass, like 64 bits of double-precision floating-point
-// glory instead of float's puny 32. Use 'em when you need accuracy that doesn't make your
-// calculations look like they were done by a drunk monkey; otherwise, stick to float and save
-// the memory, you wasteful bastard. Long ints? Just bigger ints for your oversized ego or actual
-// big numbers—use %ld, moron. Strings? Just arrays of those basic char fuckers, null-terminated
-// if you don't wanna segfault like a noob.
-
-// Pro tip: %[flags][width][.precision][length]type — like %6.2f (width 6 total, 2 decimals for float).
-// Width pads with spaces (right-aligned); 0 flag pads with zeros. Precision? For floats, it's post-decimal digits;
-// for %d/%ld, it's minimum digits (pads with zeros if less). Don't be a clown—match types or watch it barf.
 /*
-#include "stdio.h"
+// man k --> shows the index of the c lang manual. in the man commands below
+//           we add the index after man, else we will not get precise search
+//           results.
+#include <stdio.h>  // man 7 stdio
 
 int main() {
-    char name[10] = "Linus";  
-    int age = 55;            
-    float height = 5.11f;    
+    char name[10] = "Linus";  // man 3 strlen
+    int age = 55;
+    float height = 5.11f;
     double pi = 3.14159;
-    long net_worth = 1000000000000L;  
+    long net_worth = 1000000000000L;
 
-    printf("Plain name: %s\n", name);                    // "Linus"
+    // man 3 printf
+    printf("Name: %s\n", name);         // %s: null or segfault.
+    printf("Age: %d\n", age);           // %d decimal.
+    printf("Width: %3d\n", age);        // Pads spaces.
+    printf("Zero: %03d\n", age);        // 0 flag pads zeros.
+    printf("Height: %f\n", height);     // Default 6 dec—ugly.
+    printf("Prec: %.2f\n", height);     // Post-decimal.
+    printf("Full: %6.2f\n", height);    // Width+prec.
+    printf("ZeroF: %08.2f\n", height);  // Zeros, dot counts.
+    printf("Pi: %lf\n", pi);            // Not %f—man says %lf.
+    printf("Worth: %ld\n", net_worth);  // Big nums need %ld.
 
-    printf("Plain age: %d\n", age);                      // "55"
-    printf("Width 3 age: %3d\n", age);                   // " 55" (spaces).
-    printf("Zero-pad age: %03d\n", age);                 // "055"
-
-    printf("Plain height: %f\n", height);                // "5.110000"
-    printf("2 decimals: %.2f\n", height);                // "5.11"
-    printf("Width 6, 2 dec: %6.2f\n", height);           // "  5.11" (right-aligned).
-    printf("Zero-pad float: %08.2f\n", height);          // "0005.11" (zeros, but dots eat space).
-
-    printf("Plain pi: %lf\n", pi);                       // "3.141590"
-    printf("Plain net: %ld\n", net_worth);               // "1000000000000"
-
-    return 0;
+    return 0;  // man 3 exit
 }
 */
+
 
 
 
