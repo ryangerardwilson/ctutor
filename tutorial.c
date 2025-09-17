@@ -359,7 +359,7 @@ int main() {
 // getchar, but better error check.
 //
 /*
-#include <stdio.h> #define IN 1 #define OUT 0
+#include "stdio.h" #define IN 1 #define OUT 0
 
 int main() {
     int c, nl, nw, nc, state = OUT;
@@ -400,7 +400,7 @@ int main() {
 // auto-skip space. Bad input "abc"? getchar grinds; scanf bails.
 //
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     int num;
