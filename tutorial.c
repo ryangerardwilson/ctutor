@@ -364,7 +364,7 @@ int main() {
 int main() {
     int c, nl, nw, nc, state = OUT;
     nl = nw = nc = 0;
-    printf("Type text, Ctrl+D/Z to end:\n");
+    printf("Type text, Ctrl+D to end:\n");
     while (scanf("%c", &c) == 1) {
         ++nc;
         if (c == '\n') ++nl;
