@@ -319,7 +319,9 @@ int main() {
 // Uncomment putchar(c) for echo.
 //
 /*
-#include <stdio.h> #define IN 1 #define OUT 0
+#include "stdio.h" 
+#define IN 1 
+#define OUT 0
 
 int main() {
     int c, nl, nw, nc, state = OUT;
@@ -333,7 +335,6 @@ int main() {
             state = IN;
             ++nw;
         }
-        // putchar(c); // Echo
     }
     printf("%d %d %d\n", nl, nw, nc);
     return 0;
@@ -359,13 +360,18 @@ int main() {
 // getchar, but better error check.
 //
 /*
-#include "stdio.h" #define IN 1 #define OUT 0
+#include <stdio.h>
+
+#define IN 1
+#define OUT 0
 
 int main() {
     int c, nl, nw, nc, state = OUT;
+    char ch;  // Temp for scanf's char* bullshit
     nl = nw = nc = 0;
     printf("Type text, Ctrl+D to end:\n");
-    while (scanf("%c", &c) == 1) {
+    while (scanf("%c", &ch) == 1) {
+        c = (unsigned char)ch;  // Safe cast to int, handles signed char crap
         ++nc;
         if (c == '\n') ++nl;
         if (c == ' ' || c == '\n' || c == '\t') state = OUT;
@@ -373,9 +379,9 @@ int main() {
             state = IN;
             ++nw;
         }
-        // putchar(c); // Echo
+        // putchar(c);  // Echo
     }
-    printf("%d %d %d\n", nl, nw, nc);
+    printf("\n%d %d %d\n", nl, nw, nc);
     return 0;
 }
 */
