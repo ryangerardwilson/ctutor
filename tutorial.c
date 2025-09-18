@@ -315,7 +315,7 @@ int main() {
 // states—beats magic numbers.
 //
 // Example: K&R word/line/char counter with getchar till EOF. State: OUT
-// (whitespace), IN (word). Counts lines (NL), words, chars. EOF with Ctrl+D/Z.
+// (whitespace), IN (word). Counts lines (NL), words, chars. EOF with Ctrl+D.
 // Uncomment putchar(c) for echo.
 //
 /*
@@ -326,7 +326,7 @@ int main() {
 int main() {
     int c, nl, nw, nc, state = OUT;
     nl = nw = nc = 0;
-    printf("Type text, Ctrl+D/Z to end:\n");
+    printf("Type text, Ctrl+D to end:\n");
     while ((c = getchar()) != EOF) {
         ++nc;
         if (c == '\n') ++nl;
