@@ -360,7 +360,7 @@ int main() {
 // getchar, but better error check.
 //
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 #define IN 1
 #define OUT 0
