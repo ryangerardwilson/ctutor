@@ -379,7 +379,6 @@ int main() {
             state = IN;
             ++nw;
         }
-        // putchar(c);  // Echo
     }
     printf("\n%d %d %d\n", nl, nw, nc);
     return 0;
