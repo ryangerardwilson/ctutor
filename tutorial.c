@@ -319,19 +319,21 @@ int main() {
 // Uncomment putchar(c) for echo.
 //
 /*
-#include "stdio.h" 
-#define IN 1 
+#include "stdio.h"
+#define IN 1
 #define OUT 0
 
-int main() {
+int main(){
     int c, nl, nw, nc, state = OUT;
-    nl = nw = nc = 0;
+    nl = 1; // The first line may be empty, 
+            // but its still the first line
+    nw = nc = 0;
     printf("Type text, Ctrl+D to end:\n");
-    while ((c = getchar()) != EOF) {
+    while ((c=getchar()) != EOF){
         ++nc;
         if (c == '\n') ++nl;
         if (c == ' ' || c == '\n' || c == '\t') state = OUT;
-        else if (state == OUT) {
+        else if (state == OUT){
             state = IN;
             ++nw;
         }
@@ -365,17 +367,19 @@ int main() {
 #define IN 1
 #define OUT 0
 
-int main() {
+int main(){
     int c, nl, nw, nc, state = OUT;
-    char ch;  // Temp for scanf's char* bullshit
-    nl = nw = nc = 0;
+    char ch;
+    nw = nc = 0;
+    nl = 1; // The first line maybe empty
+            // but it is still the first line
     printf("Type text, Ctrl+D to end:\n");
-    while (scanf("%c", &ch) == 1) {
-        c = (unsigned char)ch;  // Safe cast to int, handles signed char crap
+    while(scanf("%c", &ch) == 1){
+        c = (unsigned char)ch;
         ++nc;
         if (c == '\n') ++nl;
         if (c == ' ' || c == '\n' || c == '\t') state = OUT;
-        else if (state == OUT) {
+        else if (state == OUT){
             state = IN;
             ++nw;
         }
