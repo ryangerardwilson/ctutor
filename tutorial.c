@@ -110,11 +110,9 @@ int main() {
     printf("Name: %s\n", name);         // %s: null or segfault.
     printf("Age: %d\n", age);           // %d decimal.
     printf("Width: %3d\n", age);        // Pads spaces.
-    printf("Zero: %03d\n", age);        // 0 flag pads zeros.
     printf("Height: %f\n", height);     // Default 6 dec—ugly.
     printf("Prec: %.2f\n", height);     // Post-decimal.
     printf("Full: %6.2f\n", height);    // Width+prec.
-    printf("ZeroF: %08.2f\n", height);  // Zeros, dot counts.
     printf("Pi: %lf\n", pi);            // Not %f—man says %lf.
     printf("Worth: %ld\n", net_worth);  // Big nums need %ld.
 
@@ -348,91 +346,6 @@ int main(){
 
 
 
-
-// Lesson 1.10: SCANF DEEP DIVE - FORMATTED INPUT, NO CHAR GRIND Getchar
-// fanboys, face facts: K&R 1.5's scanf parses formatted input like printf's
-// mirror. Returns successful reads or EOF. Unlike getchar's raw chars, it
-// skips whitespace (except %c), handles types at once, but leaves newlines
-// lurking—mix wrong, and loops infinite.
-//
-// Pro Tip: & for non-strings; array for strings. %10s limits buffers. Check
-// return value. For chars: scanf("%c", &c) mimics getchar, returns 1/EOF.
-//
-// Example: Same counter, but scanf("%c") loop. No whitespace skip, like
-// getchar, but better error check.
-//
-/*
-#include "stdio.h"
-
-#define IN 1
-#define OUT 0
-
-int main(){
-    int c, nl, nw, nc, state = OUT;
-    char ch;
-    nw = nc = 0;
-    nl = 1; // The first line maybe empty
-            // but it is still the first line
-    printf("Type text, Ctrl+D to end:\n");
-    while(scanf("%c", &ch) == 1){
-        c = (unsigned char)ch;
-        ++nc;
-        if (c == '\n') ++nl;
-        if (c == ' ' || c == '\n' || c == '\t') state = OUT;
-        else if (state == OUT){
-            state = IN;
-            ++nw;
-        }
-    }
-    printf("\n%d %d %d\n", nl, nw, nc);
-    return 0;
-}
-*/
-
-
-
-
-
-
-
-// Lesson 1.11: GETCHAR VS SCANF - RAW VS FUSSY, PICK OR PERISH Char junkies,
-// reality check: getchar's raw char hose—no skips, just stream till EOF. scanf
-// apes it with %c (returns 1/EOF), but for %d/%s? Skips whitespace, parses
-// types, chokes on mismatches, leaves buffer junk. getchar: manual parsing
-// hell for nums/strings. scanf: clean but opinionated.
-//
-// Pro Tip: getchar for exact streams; scanf for types—check returns, drain
-// buffers when mixing. Word counter? Both fine with %c; scanf("%d") fails on
-// letters, leaves crud.
-//
-// Example: Read num then char. getchar: manual digit slurp. scanf("%d %c"):
-// auto-skip space. Bad input "abc"? getchar grinds; scanf bails.
-//
-/*
-#include "stdio.h"
-
-int main() {
-    int num;
-    char ch;
-
-    printf("GETCHAR: Num then char (e.g., 42 a), enter:\n");
-    num = 0;
-    while ((ch = getchar()) != EOF && ch != ' ' && ch != '\n') {
-        if (ch >= '0' && ch <= '9') num = num * 10 + (ch - '0');
-    }
-    if (ch == ' ') ch = getchar();
-    if (ch != EOF && ch != '\n') printf("Num %d, char '%c' (getchar).\n", num, ch);
-    else printf("EOF/empty.\n");
-
-    printf("\nSCANF: Same:\n");
-    if (scanf("%d %c", &num, &ch) == 2) {
-        printf("Num %d, char '%c' (scanf).\n", num, ch);
-    } else {
-        printf("Failed.\n");
-    }
-    return 0;
-}
-*/
 
 
 
