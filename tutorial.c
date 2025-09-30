@@ -225,32 +225,24 @@ int main() {
 // Step 1: Manually zero the array (feel the burn). 
 // Step 2: Concisely zero the array {0}. 
 /*
-#include "stdio.h"
+#include <stdio.h>
 
 int main() {
     int i;
-    // manually zeroed array
+
+    // Manual zero: tedious, but you learn.
     int marr[5];
-    for (i = 0; i < 5; i++) {
-        marr[i] = 0;
-    }
-    int msum = 0;
-    printf("Manually-zeroed array: ");
-    for (i = 0; i < 5; i++) {
-        printf("%d ", marr[i]);
-        msum += marr[i];
-    }
-    printf("\nManually-zeroed sum: %d\n", msum);
-    
-    // concisely zeroed array
-    int carr[5] = {0}; // 0 propagates to all.
-    int csum = 0;
-    printf("Concisely-zeroed array: ");
-    for (i = 0; i < 5; i++) {
-        printf("%d ", carr[i]);
-        csum += carr[i];
-    }
-    printf("\nConcisely-zeroed sum: %d\n", csum);
+    for (i = 0; i < 5; i++) marr[i] = 0;
+    printf("Manually zeroed array: ");
+    for (i = 0; i < 5; i++) printf("%d ", marr[i]);
+    printf("\n");
+
+    // Concise zero: {0} does the job.
+    int carr[5] = {0};
+    printf("Concisely zeroed array: ");
+    for (i = 0; i < 5; i++) printf("%d ", carr[i]);
+    printf("\n");
+
     return 0;
 }
 */
