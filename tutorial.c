@@ -225,7 +225,7 @@ int main() {
 // Step 1: Manually zero the array (feel the burn). 
 // Step 2: Concisely zero the array {0}. 
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     int i;
