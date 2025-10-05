@@ -378,7 +378,7 @@ int main(){
 // New empty, append void*, get by index, len, free. Doesn't own items—free 'em yourself.
 /*
 #include "hs.h"
-#include "stdio.h"
+#include <stdio.h>
 
 int main() {
     hs_list* l = hs_list_new();
@@ -388,11 +388,11 @@ int main() {
     hs_list_append(l, i2);
     printf("Len: %zu\n", hs_list_len(l));
     printf("Item 0: %d\n", *(int*)hs_list_get(l, 0));
-    if (hs_list_get(l, 99) == NULL) printf("Out of bounds: %s\n", hs_err_str(hs_err_last()));
     free(i1); free(i2);
     hs_list_free(l);
     return 0;
 }
+*/
 */
 
 
@@ -405,7 +405,7 @@ int main() {
 // New empty, set string key to void*, get by key, free. Linear search—fine for small. Dup's keys, doesn't own values.
 /*
 #include "hs.h"
-#include "stdio.h"
+#include <stdio.h>
 
 int main() {
     hs_map* m = hs_map_new();
@@ -413,7 +413,6 @@ int main() {
     hs_map_set(m, "creator", v1);
     hs_map_set(m, "creator", "Linus");  // Overwrites.
     printf("Value: %s\n", (char*)hs_map_get(m, "creator"));
-    if (hs_map_get(m, "nope") == NULL) printf("Missing: %s\n", hs_err_str(hs_err_last()));
     hs_map_free(m);  // Frees keys, not values.
     return 0;
 }
@@ -426,16 +425,15 @@ int main() {
 
 
 // Lesson 2.5: DEEP DIVE INTO HS_FILE - FILES WITHOUT FOPEN MODE BULLSHIT
-// Open with mode (READ/WRITE/APPEND), write hs_str, read_all to hs_str, close. Check errors.
+// Open with mode (READ/WRITE/APPEND), write hs_str, read_all to hs_str, close.
 /*
 #include "hs.h"
-#include "stdio.h"
+#include <stdio.h>
 
 int main() {
     hs_file* f = hs_file_open("out.txt", HS_FILE_APPEND);
-    if (!f) { printf("Open fail: %s\n", hs_err_str(hs_err_last())); return 1; }
     hs_str* d = hs_str_new("Appended line.\n");
-    if (hs_file_write(f, d) != HS_ERR_OK) printf("Write fail: %s\n", hs_err_str(hs_err_last()));
+    hs_file_write(f, d);
     hs_file_close(f);
     f = hs_file_open("out.txt", HS_FILE_READ);
     hs_str* r = hs_file_read_all(f);
@@ -453,33 +451,11 @@ int main() {
 
 
 
-// Lesson 2.6: DEEP DIVE INTO HS_ERR_T - ERRORS THAT DON'T LEAVE YOU GUESSING
-// Enum: OK/NO_MEM/INVALID/IO. Last err global, get str. Reset on free_all.
-/*
-#include "hs.h"
-#include "stdio.h"
-
-int main() {
-    hs_map_set(NULL, "key", "val");  // Invalid.
-    hs_err_t e = hs_err_last();
-    printf("Err: %s (%d)\n", hs_err_str(e), e);
-    hs_str* s = malloc(1);  // Fake OOM, but actually check real fails.
-    if (!hs_str_new("too big maybe")) printf("OOM: %s\n", hs_err_str(hs_err_last()));
-    return 0;
-}
-*/
-
-
-
-
-
-
-
 // Lesson 2.7: DEEP DIVE INTO HS_FREE_ALL - NUKE YOUR LEAKS, LAZY ASS
-// Tracks all hs allocs, frees 'em all. Call at end for script cleanup. Resets err.
+// Tracks all hs allocs, frees 'em all. Call at end for script cleanup.
 /*
 #include "hs.h"
-#include "stdio.h"
+#include <stdio.h>
 
 int main() {
     hs_str_new("Leak me");
@@ -491,7 +467,6 @@ int main() {
     return 0;
 }
 */
-
 
 
 
