@@ -292,11 +292,145 @@ int main() {
 
 
 // =============================================================================
-// PART II: HIGH SEA
+// PART II: HIGH SEA - MAKING C LESS OF A PAIN FOR SCRIPTING
 // ============================================================================= 
 
+// You made it through basic C without imploding? Fine. HighSea turns C into
+// scripting without the usual bullshit. Dynamic strings, growing lists, simple
+// maps, easy files, error handling that doesn't suck. Opaque types—don't peek.
+// Allocations tracked; hs_free_all() cleans up.
+
+// Uncomment, edit, compile with -lhighsea, run. Fix your fuckups.
+
+// Lesson 2.1: STRINGS THAT DON'T SUCK
+/*
+#include "hs.h"
+#include "stdio.h"
+
+int main() {
+    hs_str* s = hs_str_new("Kernel");
+    hs_str_append(s, " hacker");
+    hs_str* concat = hs_str_concat(s, "? Kernel god.");
+    printf("%s\nLen: %zu\n", hs_str_get(concat), hs_str_len(concat));
+    hs_str_free(s);
+    hs_str_free(concat);
+    return 0;
+}
+*/
 
 
+
+
+
+
+
+// Lesson 2.2: LISTS FOR NON-MASOCHISTS
+/*
+#include "hs.h"
+#include "stdio.h"
+
+int main() {
+    hs_list* list = hs_list_new();
+    hs_str* items[] = {hs_str_new("Git"), hs_str_new("is"), hs_str_new("superior")};
+    for (int i = 0; i < 3; i++) hs_list_append(list, items[i]);
+    printf("Len: %zu\n", hs_list_len(list));
+    for (size_t i = 0; i < hs_list_len(list); i++) {
+        printf("Item %zu: %s\n", i, hs_str_get((hs_str*)hs_list_get(list, i)));
+    }
+    for (int i = 0; i < 3; i++) hs_str_free(items[i]);
+    hs_list_free(list);
+    return 0;
+}
+*/
+
+
+
+
+
+
+
+// Lesson 2.3: MAPS WITHOUT HASH BULLSHIT
+/*
+#include "hs.h"
+#include "stdio.h"
+
+int main() {
+    hs_map* map = hs_map_new();
+    int* val1 = malloc(sizeof(int)); *val1 = 1991;
+    hs_map_set(map, "year", val1);
+    hs_map_set(map, "title", "Linux creator");
+    printf("Year: %d\nTitle: %s\n", *(int*)hs_map_get(map, "year"), (char*)hs_map_get(map, "title"));
+    free(val1);
+    hs_map_free(map);
+    return 0;
+}
+*/
+
+
+
+
+
+
+
+// Lesson 2.4: FILES WITHOUT MODE MEMORIZATION
+/*
+#include "hs.h"
+#include "stdio.h"
+
+int main() {
+    hs_file* file = hs_file_open("test.txt", HS_FILE_WRITE);
+    hs_str* data = hs_str_new("HighSea: C scripting without agony.\n");
+    hs_file_write(file, data);
+    hs_file_close(file);
+    file = hs_file_open("test.txt", HS_FILE_READ);
+    hs_str* read = hs_file_read_all(file);
+    printf("%s", hs_str_get(read));
+    hs_file_close(file);
+    hs_str_free(data);
+    hs_str_free(read);
+    return 0;
+}
+*/
+
+
+
+
+
+
+
+// Lesson 2.5: ERROR HANDLING THAT TELLS YOU WHAT BROKE
+/*
+#include "hs.h"
+#include "stdio.h"
+
+int main() {
+    hs_str* s = hs_str_new(NULL);
+    if (!s) printf("Error: %s (%d)\n", hs_err_str(hs_err_last()), hs_err_last());
+    hs_file* file = hs_file_open("/nonexistent", HS_FILE_READ);
+    if (!file) printf("File error: %s\n", hs_err_str(hs_err_last()));
+    return 0;
+}
+*/
+
+
+
+
+
+
+
+// Lesson 2.6: HS_FREE_ALL FOR LAZY CLEANUP
+/*
+#include "hs.h"
+#include "stdio.h"
+
+int main() {
+    hs_str_new("One");
+    hs_str_new("Two");
+    hs_list* list = hs_list_new();
+    hs_free_all();  // Nukes everything tracked.
+    return 0;
+}
+*/
 
 
 
