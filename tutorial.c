@@ -253,21 +253,30 @@ int main() {
 
 
 
-// Lesson 1.7: FUNCTIONS - REUSE CODE, DON'T COPY-PASTE LIKE AN AMATEUR
+// Lesson 1.7: FUNCTIONS - Reuse code, avoid copy-paste idiocy.
+// Globals: Visible everywhere, but avoid them like crap code.
+// Locals: Function-only scope. Blocks have sub-scopes.
 /*
 #include "stdio.h"
 
+int global = 0;  // External var: bad idea mostly.
+
 int add(int a, int b) {
-    // Fix: return sum
-    return a + b;
+    int sum = a + b;  // Local: dies here.
+    global++;  // Access external.
+    return sum;
 }
 
 int main() {
-    printf("%d\n", add(3, 4)); // Should be 7
+    printf("%d\n", add(3, 4));  // 7
+    {
+        int block_var = 42;  // Block scope.
+    }
+    // block_var out of scope here.
+    printf("Global: %d\n", global);  // 1
     return 0;
 }
 */
-
 
 
 
