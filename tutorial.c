@@ -259,7 +259,7 @@ int main() {
 // Locals: Function/block scope only.
 // Constants: Use #define or const, no magic numbers.
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 #define INC 1  // Preprocessor constant.
 const int G_CONST = 42;  // Global const.
@@ -293,27 +293,65 @@ int main() {
 
 // =============================================================================
 // PART II: HIGH SEA - MAKING C LESS OF A PAIN FOR SCRIPTING
-// ============================================================================= 
+// =============================================================================
 
-// You made it through basic C without imploding? Fine. HighSea turns C into
-// scripting without the usual bullshit. Dynamic strings, growing lists, simple
-// maps, easy files, error handling that doesn't suck. Opaque types—don't peek.
-// Allocations tracked; hs_free_all() cleans up.
+// You survived basic C? Pathetic. HighSea is my hack to make C scriptable
+// without the usual malloc-induced aneurysms. Dynamic strings, auto-growing
+// lists, braindead maps, file ops that don't require a PhD in fopen, errors
+// that actually tell you what went wrong, and a nuke-all cleanup. Types are
+// opaque—fuck with internals and segfault your own face. Allocs tracked;
+// hs_free_all() for lazy bastards.
 
-// Uncomment, edit, compile with -lhighsea, run. Fix your fuckups.
+// Lesson 2.1: OVERVIEW OF HIGHSEA TYPES - DON'T BE A TYPE IDIOT
+// hs_str: Dynamic strings, append/concat without buffer overflow hell.
+// hs_list: Growable lists of void*, append/get/len.
+// hs_map: String-key void*-value maps, set/get.
+// hs_file: File handles, open/read/write/close with sane modes.
+// hs_err_t: Error enum, check after ops.
+/*
+#include "hs.h"
+#include "stdio.h"
 
-// Lesson 2.1: STRINGS THAT DON'T SUCK
+int main() {
+    hs_str* s = hs_str_new("HighSea");  // String type.
+    hs_list* l = hs_list_new();         // List type.
+    hs_map* m = hs_map_new();           // Map type.
+    hs_file* f = hs_file_open("test.txt", HS_FILE_WRITE);  // File type.
+    if (!f) return 1;
+
+    hs_str_append(s, " rules");         // Use string.
+    hs_list_append(l, s);               // List takes void*.
+    hs_map_set(m, "key", s);            // Map set.
+
+    hs_str* got = (hs_str*)hs_map_get(m, "key");
+    printf("%s\n", hs_str_get(got));
+
+    hs_file_close(f);
+    hs_free_all();  // Nukes all.
+    return 0;
+}
+*/
+
+
+
+
+
+
+
+// Lesson 2.2: DEEP DIVE INTO HS_STR - STRINGS WITHOUT THE USUAL C CRAP
+// New from char*, append, concat (new str), get char*/len, free. Dynamic resize, null-term'd.
 /*
 #include "hs.h"
 #include "stdio.h"
 
 int main() {
     hs_str* s = hs_str_new("Kernel");
-    hs_str_append(s, " hacker");
-    hs_str* concat = hs_str_concat(s, "? Kernel god.");
-    printf("%s\nLen: %zu\n", hs_str_get(concat), hs_str_len(concat));
+    hs_str_append(s, " panic?");  // Mutates s.
+    hs_str* c = hs_str_concat(s, " Fix your shit.");  // New str.
+    printf("%s (len %zu)\n", hs_str_get(c), hs_str_len(c));
+    if (hs_str_append(s, NULL) != HS_ERR_OK) printf("Append fail: %s\n", hs_err_str(hs_err_last()));
     hs_str_free(s);
-    hs_str_free(concat);
+    hs_str_free(c);
     return 0;
 }
 */
@@ -324,21 +362,23 @@ int main() {
 
 
 
-// Lesson 2.2: LISTS FOR NON-MASOCHISTS
+// Lesson 2.3: DEEP DIVE INTO HS_LIST - LISTS THAT GROW, UNLIKE YOUR STATIC ARRAYS
+// New empty, append void*, get by index, len, free. Doesn't own items—free 'em yourself.
 /*
 #include "hs.h"
 #include "stdio.h"
 
 int main() {
-    hs_list* list = hs_list_new();
-    hs_str* items[] = {hs_str_new("Git"), hs_str_new("is"), hs_str_new("superior")};
-    for (int i = 0; i < 3; i++) hs_list_append(list, items[i]);
-    printf("Len: %zu\n", hs_list_len(list));
-    for (size_t i = 0; i < hs_list_len(list); i++) {
-        printf("Item %zu: %s\n", i, hs_str_get((hs_str*)hs_list_get(list, i)));
-    }
-    for (int i = 0; i < 3; i++) hs_str_free(items[i]);
-    hs_list_free(list);
+    hs_list* l = hs_list_new();
+    int* i1 = malloc(sizeof(int)); *i1 = 42;
+    int* i2 = malloc(sizeof(int)); *i2 = 69;
+    hs_list_append(l, i1);
+    hs_list_append(l, i2);
+    printf("Len: %zu\n", hs_list_len(l));
+    printf("Item 0: %d\n", *(int*)hs_list_get(l, 0));
+    if (hs_list_get(l, 99) == NULL) printf("Out of bounds: %s\n", hs_err_str(hs_err_last()));
+    free(i1); free(i2);
+    hs_list_free(l);
     return 0;
 }
 */
@@ -349,19 +389,20 @@ int main() {
 
 
 
-// Lesson 2.3: MAPS WITHOUT HASH BULLSHIT
+// Lesson 2.4: DEEP DIVE INTO HS_MAP - MAPS FOR KEY-VALUE WITHOUT REINVENTING HASHES
+// New empty, set string key to void*, get by key, free. Linear search—fine for small. Dup's keys, doesn't own values.
 /*
 #include "hs.h"
 #include "stdio.h"
 
 int main() {
-    hs_map* map = hs_map_new();
-    int* val1 = malloc(sizeof(int)); *val1 = 1991;
-    hs_map_set(map, "year", val1);
-    hs_map_set(map, "title", "Linux creator");
-    printf("Year: %d\nTitle: %s\n", *(int*)hs_map_get(map, "year"), (char*)hs_map_get(map, "title"));
-    free(val1);
-    hs_map_free(map);
+    hs_map* m = hs_map_new();
+    char* v1 = "Torvalds";
+    hs_map_set(m, "creator", v1);
+    hs_map_set(m, "creator", "Linus");  // Overwrites.
+    printf("Value: %s\n", (char*)hs_map_get(m, "creator"));
+    if (hs_map_get(m, "nope") == NULL) printf("Missing: %s\n", hs_err_str(hs_err_last()));
+    hs_map_free(m);  // Frees keys, not values.
     return 0;
 }
 */
@@ -372,22 +413,24 @@ int main() {
 
 
 
-// Lesson 2.4: FILES WITHOUT MODE MEMORIZATION
+// Lesson 2.5: DEEP DIVE INTO HS_FILE - FILES WITHOUT FOPEN MODE BULLSHIT
+// Open with mode (READ/WRITE/APPEND), write hs_str, read_all to hs_str, close. Check errors.
 /*
 #include "hs.h"
 #include "stdio.h"
 
 int main() {
-    hs_file* file = hs_file_open("test.txt", HS_FILE_WRITE);
-    hs_str* data = hs_str_new("HighSea: C scripting without agony.\n");
-    hs_file_write(file, data);
-    hs_file_close(file);
-    file = hs_file_open("test.txt", HS_FILE_READ);
-    hs_str* read = hs_file_read_all(file);
-    printf("%s", hs_str_get(read));
-    hs_file_close(file);
-    hs_str_free(data);
-    hs_str_free(read);
+    hs_file* f = hs_file_open("out.txt", HS_FILE_APPEND);
+    if (!f) { printf("Open fail: %s\n", hs_err_str(hs_err_last())); return 1; }
+    hs_str* d = hs_str_new("Appended line.\n");
+    if (hs_file_write(f, d) != HS_ERR_OK) printf("Write fail: %s\n", hs_err_str(hs_err_last()));
+    hs_file_close(f);
+    f = hs_file_open("out.txt", HS_FILE_READ);
+    hs_str* r = hs_file_read_all(f);
+    printf("Content: %s", hs_str_get(r));  // May lack \n at end.
+    hs_file_close(f);
+    hs_str_free(d);
+    hs_str_free(r);
     return 0;
 }
 */
@@ -398,16 +441,18 @@ int main() {
 
 
 
-// Lesson 2.5: ERROR HANDLING THAT TELLS YOU WHAT BROKE
+// Lesson 2.6: DEEP DIVE INTO HS_ERR_T - ERRORS THAT DON'T LEAVE YOU GUESSING
+// Enum: OK/NO_MEM/INVALID/IO. Last err global, get str. Reset on free_all.
 /*
 #include "hs.h"
 #include "stdio.h"
 
 int main() {
-    hs_str* s = hs_str_new(NULL);
-    if (!s) printf("Error: %s (%d)\n", hs_err_str(hs_err_last()), hs_err_last());
-    hs_file* file = hs_file_open("/nonexistent", HS_FILE_READ);
-    if (!file) printf("File error: %s\n", hs_err_str(hs_err_last()));
+    hs_map_set(NULL, "key", "val");  // Invalid.
+    hs_err_t e = hs_err_last();
+    printf("Err: %s (%d)\n", hs_err_str(e), e);
+    hs_str* s = malloc(1);  // Fake OOM, but actually check real fails.
+    if (!hs_str_new("too big maybe")) printf("OOM: %s\n", hs_err_str(hs_err_last()));
     return 0;
 }
 */
@@ -418,16 +463,19 @@ int main() {
 
 
 
-// Lesson 2.6: HS_FREE_ALL FOR LAZY CLEANUP
+// Lesson 2.7: DEEP DIVE INTO HS_FREE_ALL - NUKE YOUR LEAKS, LAZY ASS
+// Tracks all hs allocs, frees 'em all. Call at end for script cleanup. Resets err.
 /*
 #include "hs.h"
 #include "stdio.h"
 
 int main() {
-    hs_str_new("One");
-    hs_str_new("Two");
-    hs_list* list = hs_list_new();
-    hs_free_all();  // Nukes everything tracked.
+    hs_str_new("Leak me");
+    hs_list_new();
+    hs_map_new();
+    hs_file_open("dummy.txt", HS_FILE_WRITE);  // Close manually if open.
+    hs_free_all();  // All gone, pointers invalid.
+    printf("Cleaned.\n");
     return 0;
 }
 */
