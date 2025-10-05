@@ -253,30 +253,36 @@ int main() {
 
 
 
-// Lesson 1.7: FUNCTIONS - Reuse code, avoid copy-paste idiocy.
-// Globals: Visible everywhere, but avoid them like crap code.
-// Locals: Function-only scope. Blocks have sub-scopes.
+// Lesson 1.7: FUNCTIONS - Reuse code, skip copy-paste crap.
+// Globals: Visible everywhere, avoid like plague.
+// Locals: Function/block scope only.
+// Constants: Use #define or const, no magic numbers.
 /*
-#include "stdio.h"
+#include <stdio.h>
 
-int global = 0;  // External var: bad idea mostly.
+#define INC 1  // Preprocessor constant.
+const int G_CONST = 42;  // Global const.
+
+int global = 0;  // Mutable global: mostly bad.
 
 int add(int a, int b) {
-    int sum = a + b;  // Local: dies here.
-    global++;  // Access external.
+    const int L_CONST = 10;  // Local const.
+    int sum = a + b + L_CONST;
+    global += INC;
     return sum;
 }
 
 int main() {
-    printf("%d\n", add(3, 4));  // 7
+    printf("%d\n", add(3, 4));  // 17
     {
-        int block_var = 42;  // Block scope.
+        const int b_const = G_CONST;  // Block const.
+        printf("Block: %d\n", b_const);
     }
-    // block_var out of scope here.
     printf("Global: %d\n", global);  // 1
     return 0;
 }
 */
+
 
 
 
