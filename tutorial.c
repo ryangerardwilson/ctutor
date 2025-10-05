@@ -54,47 +54,9 @@ terminal. Let's make you not a C poser.
 */
 //
 // =============================================================================
-// 
-// Lesson 1.1: VARIABLES, ASSIGNMENT AND FORMATTING - **Lesson 1.1: Variables,
-// Assignment, and Formatting** Straight from K&R sections 1.2-1.3: Declare
-// variables of different types, slap values into 'em, and print that shit
-// properly. No half-assing it.
-//
-// - **Strings? What a joke.** In C, strings aren't a real goddamn data type,
-// you naive fool. They're just arrays of chars, null-terminated if you don't
-// want your program to crash like a bad hangover.
-//
-// - **int: For your basic whole-number bullshit.** No fractions here—just
-// integers. Simple, fast, and won't lie to you about decimals.
-//
-// - **float: Decimals, but don't trust 'em blindly.** Floating-point numbers
-// for when you need fractions, but precision is a myth—it's approximate as
-// hell. Use it for quick and dirty calc, but expect rounding errors to bite
-// you in the ass.
-//
-// - **char: A single byte pretending to be special.** Basically a tiny int for
-// one character. Don't overthink it; it's glorified ASCII.
-//
-// - **double: Float on steroids.** Beefed-up float with 64 bits of
-// double-precision glory instead of float's wimpy 32. Use doubles when your
-// calculations need actual accuracy—don't be the idiot who uses float for
-// anything serious and ends up with drunk-monkey math. Otherwise, save the
-// memory and stick to float, you hog.
-//
-// - **long int: For when ints feel too small.** Bigger integers for your
-// massive numbers or oversized ego. Print 'em with %ld, moron, or watch it all
-// go to shit.
-//
-// - **Pro Tip: printf Formatting Magic** The format string is
-// %[flags][width][.precision][length]type.  - Example: %6.2f — Total width 6
-// (padded with spaces on the left, right-aligned), 2 digits after decimal for
-// floats.  - Width: Pads with spaces by default; slap a 0 flag (%06d) for
-// zero-padding.  - Precision: For floats, it's post-decimal digits; for %d or
-// %ld, it's minimum digits (pads with zeros if short).  - Golden Rule: Match
-// the type exactly (%d for int, %f for float, %ld for long, etc.), or your
-// program's gonna puke undefined behavior all over your screen. Don't be that
-// clown.
-
+// PART I: CONVENTIONAL CORE OF C
+// ============================================================================= 
+// Lesson 1.1: VARIABLES, ASSIGNMENT AND FORMATTING
 /*
 // man 7 man-pages --> spells out what every section in the man pages is for
 #include "stdio.h"  // man 3 stdio
@@ -219,7 +181,7 @@ int main() {
 
 // Lesson 1.6: GETCHAR, PUTCHAR, EOF
 /*
-#include <stdio.h>
+#include "stdio.h"
 
 int main() {
     int c;
@@ -329,6 +291,9 @@ int main() {
 
 
 
+// =============================================================================
+// PART II: HIGH SEA
+// ============================================================================= 
 
 
 
