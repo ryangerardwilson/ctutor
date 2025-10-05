@@ -345,18 +345,23 @@ int main() {
 
 
 
-// Lesson 2.2: DEEP DIVE INTO HS_STR - STRINGS WITHOUT THE USUAL C CRAP
-// New from char*, append, concat (new str), get char*/len, free. Dynamic resize, null-term'd.
+// Lesson 2.2: DEEP DIVE INTO HS_STR - STRINGS WITHOUT THE USUAL C CRAP New
+// from char*, append, concat (new str), get char*/len, free. Dynamic resize,
+// null-term'd.
 /*
-#include "hs.h"
+#include "hs.h" 
 #include "stdio.h"
 
-int main() {
-    hs_str* s = hs_str_new("Kernel");
-    hs_str_append(s, " panic?");  // Mutates s.
-    hs_str* c = hs_str_concat(s, " Fix your shit.");  // New str.
+int main(){
+    hs_str *s = hs_str_new("Kernel");
+    hs_str_append(s, " panic?");
+    hs_str* c = hs_str_concat(s, " Fix your shit.");
+    printf("Printing s, and its properties\n\n");
     printf("%s (len %zu)\n", hs_str_get(c), hs_str_len(c));
-    if (hs_str_append(s, NULL) != HS_ERR_OK) printf("Append fail: %s\n", hs_err_str(hs_err_last()));
+    printf("\nDebugging s, and its properties\n");
+    hs_debug(c, HS_STR);
+
+    printf("\nFreeing up memory by removing variables");
     hs_str_free(s);
     hs_str_free(c);
     return 0;
