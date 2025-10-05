@@ -155,26 +155,8 @@ int main() {
 
 
 
-// Lesson 1.3: FOR LOOP - REPEAT WITHOUT BEING A LOOP IDIOT
-/*
-#include "stdio.h"
 
-int main() {
-    int i;
-    for (i = 0; i < 10; i++) {
-        printf("%d\n", i * i);  
-    }
-    return 0;
-}
-*/
-
-
-
-
-
-
-
-// Lesson 1.4: IF-ELSE - DECISIONS, NOT RANDOM CRAP
+// Lesson 1.3: IF-ELSE - DECISIONS, NOT RANDOM CRAP
 /*
 #include "stdio.h"
 
@@ -195,7 +177,7 @@ int main() {
 
 
 
-// Lesson 1.5: WHILE LOOP - UNTIL YOU'RE DONE, YOU PIG
+// Lesson 1.4: WHILE LOOP - UNTIL YOU'RE DONE, YOU PIG
 /*
 #include "stdio.h"
 
@@ -216,7 +198,64 @@ int main() {
 
 
 
-// Lesson 1.6: ARRAYS - LISTS OF STUFF, DON'T OVERFLOW YOU MORON (Restructured: 
+// Lesson 1.5: FOR LOOP - REPEAT WITHOUT BEING A LOOP IDIOT
+/*
+#include "stdio.h"
+
+int main() {
+    int i;
+    for (i = 0; i < 10; i++) {
+        printf("%d\n", i * i);  
+    }
+    return 0;
+}
+*/
+
+
+
+
+
+
+
+// Lesson 1.6: GETCHAR, PUTCHAR, EOF
+/*
+#include <stdio.h>
+
+int main() {
+    int c;
+    printf("Type text, Ctrl+D to end:\n");
+    while ((c = getchar()) != EOF) {
+        putchar(c);
+    }
+    return 0;
+}
+*/
+
+
+
+
+
+
+
+// Lesson 1.7: SCANF - READ INPUT, DON'T HARDWIRE EVERYTHING
+/*
+#include "stdio.h"
+
+int main() {
+    char name[20];
+    printf("Enter name: ");
+    scanf("%s", name);
+    printf("Hello, %s\n", name);
+    return 0;
+}
+*/
+
+
+
+
+
+
+// Lesson 1.8: ARRAYS - LISTS OF STUFF, DON'T OVERFLOW YOU MORON (Restructured: 
 // Manual Loop-Zero First, Then Concise)
 
 // Truth bomb: Local arrays spawn as garbage. Manual loop teaches pain; {0} is 
@@ -253,7 +292,7 @@ int main() {
 
 
 
-// Lesson 1.7: FUNCTIONS - Reuse code, skip copy-paste crap.
+// Lesson 1.9: FUNCTIONS - Reuse code, skip copy-paste crap.
 // Globals: Visible everywhere, avoid like plague.
 // Locals: Function/block scope only.
 // Constants: Use #define or const, no magic numbers.
@@ -289,64 +328,9 @@ int main() {
 
 
 
-// Lesson 1.8: SCANF - READ INPUT, DON'T HARDWIRE EVERYTHING
-/*
-#include "stdio.h"
-
-int main() {
-    char name[20];
-    printf("Enter name: ");
-    scanf("%s", name);
-    printf("Hello, %s\n", name);
-    return 0;
-}
-*/
 
 
 
-
-
-
-
-// Lesson 1.9: GETCHAR, PUTCHAR, EOF, AND #DEFINE - SINGLE-CHAR I/O AND
-// PREPROCESSOR BASICS Wake up, you fumbling newbies: K&R 1.5-1.6 and 1.9 hit
-// you with getchar()/putchar() for char I/O and EOF (-1) for end-of-input.
-// #define swaps text pre-compile—use for constants to avoid hardcoded garbage.
-// It's basic; skip it and your loops hang like a bad patch.  getchar() reads
-// one char as int (for EOF), putchar() outputs it. #define: uppercase
-// constants, no semicolons, or your code explodes.
-//
-// Pro Tip: Store getchar() in int for EOF. Use #define IN 1, OUT 0 for
-// states—beats magic numbers.
-//
-// Example: K&R word/line/char counter with getchar till EOF. State: OUT
-// (whitespace), IN (word). Counts lines (NL), words, chars. EOF with Ctrl+D.
-// Uncomment putchar(c) for echo.
-//
-/*
-#include "stdio.h"
-#define IN 1
-#define OUT 0
-
-int main(){
-    int c, nl, nw, nc, state = OUT;
-    nl = 1; // The first line may be empty, 
-            // but its still the first line
-    nw = nc = 0;
-    printf("Type text, Ctrl+D to end:\n");
-    while ((c=getchar()) != EOF){
-        ++nc;
-        if (c == '\n') ++nl;
-        if (c == ' ' || c == '\n' || c == '\t') state = OUT;
-        else if (state == OUT){
-            state = IN;
-            ++nw;
-        }
-    }
-    printf("\n%d %d %d\n", nl, nw, nc);
-    return 0;
-}
-*/
 
 
 
