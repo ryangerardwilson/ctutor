@@ -302,13 +302,21 @@ int main() {
 // opaque—fuck with internals and segfault your own face. Allocs tracked;
 // hs_free_all() for lazy bastards.
 
+// Oh, and since some idiot decided to "simplify" by making all string ops take
+// hs_str* only—no more const char* coddling—you'll wrap literals in hs_str_new
+// like a goddamn adult. Concat's now variadic with a count up front, because
+// NULL terminators are for wimps who enjoy segfaults. Count your args or crash,
+// your choice. Ditched that wrap crap too—use concat like a real programmer,
+// since it does the same job without extra bloat.
+
 // Lesson 2.1: OVERVIEW OF HIGHSEA TYPES - DON'T BE A TYPE IDIOT
 // hs_str: Dynamic strings, append/concat without buffer overflow hell.
 // hs_list: Growable lists of void*, append/get/len.
 // hs_map: String-key void*-value maps, set/get.
 // hs_file: File handles, open/read/write/close with sane modes.
 // hs_err_t: Error enum, check after ops.
-// hs_debug: Spew internals of any hs_* thing—type and guts, no recursion because C ain't magic.
+// hs_debug: Spew internals of any hs_* thing—type and guts, no recursion
+// because C ain't magic.
 /*
 #include "hs.h"
 #include "stdio.h"
@@ -320,7 +328,10 @@ int main() {
     hs_file* f = hs_file_open("test.txt", HS_FILE_WRITE);
     if (!f) return 1;
 
-    hs_str_append(s, " rules");
+    hs_str* append_me = hs_str_new(" rules");  // No more direct char*, wrap it you lazy hack
+    hs_str_append(s, append_me);
+    hs_str_free(append_me);  // Or let hs_free_all do it, but don't leak like a sieve
+
     hs_list_append(l, s);
     hs_map_set(m, "key", s);
 
@@ -345,25 +356,29 @@ int main() {
 
 
 
-// Lesson 2.2: DEEP DIVE INTO HS_STR - STRINGS WITHOUT THE USUAL C CRAP New
-// from char*, append, concat (new str), get char*/len, free. Dynamic resize,
-// null-term'd.
+// Lesson 2.2: DEEP DIVE INTO HS_STR - STRINGS WITHOUT THE USUAL C CRAP 
+
+// New from char*, append, concat (new str, now with count-variadic), get
+// char*/len, free. Dynamic resize, null-term'd. Prepend now takes hs_str*
+// too—consistency, finally. No more wrap; concat handles it.
 /*
-#include "hs.h" 
-#include "stdio.h"
+#include "hs.h" #include "stdio.h"
+
+#define ANSI_RED_START "\033[31m"
+#define ANSI_CLOSE "\033[0m"
 
 int main(){
-    hs_str *s = hs_str_new("Kernel");
-    hs_str_append(s, " panic?");
-    hs_str* c = hs_str_concat(s, " Fix your shit.");
-    printf("Printing s, and its properties\n\n");
-    printf("%s (len %zu)\n", hs_str_get(c), hs_str_len(c));
-    printf("\nDebugging s, and its properties\n");
-    hs_debug(c, HS_STR);
 
-    printf("\nFreeing up memory by removing variables");
-    hs_str_free(s);
-    hs_str_free(c);
+    hs_str *middle = hs_str_new("Kernel");
+    hs_str *start = hs_str_new(ANSI_RED_START);
+    hs_str *close = hs_str_new(ANSI_CLOSE);
+
+    // Concat now takes count first, then variadic hs_str*—count 'em right or die
+    hs_str* combined = hs_str_concat(3, start, middle, close);
+    printf("\n%s\n", hs_str_get(combined));
+    hs_str_free(combined);  // Don't forget, or hs_free_all at end
+
+    hs_free_all();
     return 0;
 }
 */
@@ -374,11 +389,11 @@ int main(){
 
 
 
-// Lesson 2.3: DEEP DIVE INTO HS_LIST - LISTS THAT GROW, UNLIKE YOUR STATIC ARRAYS
-// New empty, append void*, get by index, len, free. Doesn't own items—free 'em yourself.
+// Lesson 2.3: DEEP DIVE INTO HS_LIST - LISTS THAT GROW, UNLIKE YOUR STATIC
+// ARRAYS New empty, append void*, get by index, len, free. Doesn't own
+// items—free 'em yourself.
 /*
-#include "hs.h"
-#include <stdio.h>
+#include "hs.h" #include <stdio.h>
 
 int main() {
     hs_list* l = hs_list_new();
@@ -393,7 +408,6 @@ int main() {
     return 0;
 }
 */
-*/
 
 
 
@@ -401,11 +415,12 @@ int main() {
 
 
 
-// Lesson 2.4: DEEP DIVE INTO HS_MAP - MAPS FOR KEY-VALUE WITHOUT REINVENTING HASHES
-// New empty, set string key to void*, get by key, free. Linear search—fine for small. Dup's keys, doesn't own values.
+// Lesson 2.4: DEEP DIVE INTO HS_MAP - MAPS FOR KEY-VALUE WITHOUT REINVENTING
+// HASHES New empty, set string key to void*, get by key, free. Linear
+// search—fine for small. Dup's keys, doesn't own values.  Note: Keys are still
+// const char* in set—didn't "simplify" that yet, inconsistent crap.
 /*
-#include "hs.h"
-#include <stdio.h>
+#include "hs.h" #include <stdio.h>
 
 int main() {
     hs_map* m = hs_map_new();
@@ -424,11 +439,10 @@ int main() {
 
 
 
-// Lesson 2.5: DEEP DIVE INTO HS_FILE - FILES WITHOUT FOPEN MODE BULLSHIT
-// Open with mode (READ/WRITE/APPEND), write hs_str, read_all to hs_str, close.
+// Lesson 2.5: DEEP DIVE INTO HS_FILE - FILES WITHOUT FOPEN MODE BULLSHIT Open
+// with mode (READ/WRITE/APPEND), write hs_str, read_all to hs_str, close.
 /*
-#include "hs.h"
-#include <stdio.h>
+#include "hs.h" #include <stdio.h>
 
 int main() {
     hs_file* f = hs_file_open("out.txt", HS_FILE_APPEND);
@@ -467,10 +481,4 @@ int main() {
     return 0;
 }
 */
-
-
-
-
-
-
 
