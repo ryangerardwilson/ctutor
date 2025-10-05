@@ -308,26 +308,33 @@ int main() {
 // hs_map: String-key void*-value maps, set/get.
 // hs_file: File handles, open/read/write/close with sane modes.
 // hs_err_t: Error enum, check after ops.
+// hs_debug: Spew internals of any hs_* thing—type and guts, no recursion because C ain't magic.
 /*
 #include "hs.h"
 #include "stdio.h"
 
 int main() {
-    hs_str* s = hs_str_new("HighSea");  // String type.
-    hs_list* l = hs_list_new();         // List type.
-    hs_map* m = hs_map_new();           // Map type.
-    hs_file* f = hs_file_open("test.txt", HS_FILE_WRITE);  // File type.
+    hs_str* s = hs_str_new("HighSea");
+    hs_list* l = hs_list_new();
+    hs_map* m = hs_map_new();
+    hs_file* f = hs_file_open("test.txt", HS_FILE_WRITE);
     if (!f) return 1;
 
-    hs_str_append(s, " rules");         // Use string.
-    hs_list_append(l, s);               // List takes void*.
-    hs_map_set(m, "key", s);            // Map set.
+    hs_str_append(s, " rules");
+    hs_list_append(l, s);
+    hs_map_set(m, "key", s);
 
-    hs_str* got = (hs_str*)hs_map_get(m, "key");
-    printf("%s\n", hs_str_get(got));
+    printf("\n");
+    hs_debug(s, HS_STR);
+    printf("\n");
+    hs_debug(l, HS_LIST);
+    printf("\n");
+    hs_debug(m, HS_MAP);
+    printf("\n");
+    hs_debug(f, HS_FILE);
 
     hs_file_close(f);
-    hs_free_all();  // Nukes all.
+    hs_free_all();
     return 0;
 }
 */
