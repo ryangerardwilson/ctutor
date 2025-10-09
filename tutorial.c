@@ -52,33 +52,47 @@ terminal. Let's make you not a C poser.
     in Vim. See your output or errors without leaving the editor. Efficient,
     no? Do this per lesson—keeps shit isolated, no global link-time fuckups.
 */
-//
+
 // =============================================================================
 // PART I: CONVENTIONAL CORE OF C
 // ============================================================================= 
-// Lesson 1.1: VARIABLES, ASSIGNMENT AND FORMATTING
+
+// Lesson 1.1: BASIC DATA TYPES, AND THEIR QUALIFIERS
 /*
-// man 7 man-pages --> spells out what every section in the man pages is for
 #include "stdio.h"  // man 3 stdio
 
 int main() {
-    char name[10] = "Linus";  // man 3 strlen
-    int age = 55;
-    float height = 5.11f;
-    double pi = 3.14159;
-    long net_worth = 1000000000000L;
 
-    // man 3 printf
-    printf("Name: %s\n", name);         // %s: null or segfault.
-    printf("Age: %d\n", age);           // %d decimal.
-    printf("Width: %3d\n", age);        // Pads spaces.
-    printf("Height: %f\n", height);     // Default 6 dec—ugly.
-    printf("Prec: %.2f\n", height);     // Post-decimal.
-    printf("Full: %6.2f\n", height);    // Width+prec.
-    printf("Pi: %lf\n", pi);            // Not %f—man says %lf.
-    printf("Worth: %ld\n", net_worth);  // Big nums need %ld.
+    // 1. The 4 Complete Basic Data Types --------------------------------------
+    // Compiler allocates memory based on type declaration.
+    int i = 1337;              // Natural int, 32/64 bits 
+    float f = 3.14f;           // Single-precision; 'f' suffix prevents default
+                               // assumption of double.
+    double d = 3.1415926535;   // Double-precision for more accuracy.
 
-    return 0; 
+    // ASCII: 7-bit standard (0-127) for basics like letters, digits, punctuation.
+    // Extended ASCII: 8-bit (0-255) for extras like accented letters
+    char c = 'L';              // 1 byte, ASCII 'L' (76 decimal).
+    // Equivalent:
+    char c2 = 76;
+
+    // Qualifiers: short (16 bits), long (64 bits), signed (default), unsigned.
+    short s = -32768;
+    long l = 9223372036854775807L;
+    long double ld = 3.14159265358979323846L;
+    unsigned int ui = 4294967295;  // Prevents negative values.
+
+    // Best practice: Use unsigned char for extended ASCII to avoid signed negatives.
+    signed char sc = 128;      // Equals -128 due to two's complement.
+    unsigned char uc = 128;    // Stays 128.
+
+    // 2. Void: The Only Incomplete Basic Data Type ----------------------------
+    // Void means "no type", no memory; incomplete since types need >=1 byte,
+    // as per the C Memory Model.
+    void *void_pointer = &i;   // Generic pointer: holds any address no matter
+                               // the type.
+
+    return 0;
 }
 */
 
@@ -88,7 +102,89 @@ int main() {
 
 
 
-// Lesson 1.2: BASIC ARITHMETIC EXPRESSIONS
+// Lesson 1.2: DERIVED DATA TYPES 
+/*
+#include "stdio.h"  
+
+int main() {
+    // Array: A contiguous block of the same complete type
+    // Derived from char
+    char name[10] = "Linus";   
+    // Derived from int
+    int numbers[5] = {1, 2, 3, 4, 5};
+    // Derived from float
+    float decimals[4] = {3.14, 2.718, 1.618, 0.577};
+
+    // Pointer: Variable holding the address of a type
+    // Derived from int
+    int x = 42;
+    int *p = &x;               // Pointer to int. *p == 42.
+    // Derived from function type
+    int (*func_ptr)(void) = main; // Pointer to the main function 
+
+    // Struct: derived from multiple basics
+    struct Person {
+        char name[20];
+        int age;
+        float height;
+    } torvalds = {"Linus Torvalds", 55, 5.11f};  // Init.
+
+    // Union: shares the same memory for all members
+    union Data {
+        int i;
+        float f;
+    } u;
+    // Store an integer in the union
+    u.i = 42;
+    return 0;
+}
+*/
+
+
+
+
+
+
+
+// Lesson 1.3: FORMATTING WITH PRINTF
+/*
+#include "stdio.h"  
+
+int main() {
+    char name[10] = "Linus";
+    int age = 55;
+    float height = 5.11f;
+    double pi = 3.14159;
+    long net_worth = 1000000000000L;
+
+    // %s for strings: null-terminated or segfault 
+    printf("Name: %s\n", name);         
+    // %d for decimal integers.
+    printf("Age: %d\n", age);           
+    // Minimum width 3, pads with spaces. Useful for alignment.
+    printf("Width: %3d\n", age);        
+    // %f for floats, default 6 decimal places--ugly as sin.
+    printf("Height: %f\n", height);     
+    // Precision: 2 digits after decimal.
+    printf("Prec: %.2f\n", height);    
+    // Width 6, precision 2. Combines 'em.
+    printf("Full: %6.2f\n", height);    
+    // Doubles use %lf, not %f--man page says so, ignore at your peril.
+    printf("Pi: %lf\n", pi);           
+    // %ld for longs, because big numbers deserve respect.
+    printf("Worth: %ld\n", net_worth);  
+
+    return 0;
+}
+*/
+
+
+
+
+
+
+
+// Lesson 1.4: BASIC ARITHMETIC EXPRESSIONS
 // In C, operators have a strict order of precedence (like most sane languages):
 // 1. Parentheses () override everything—evaluate inside first.
 // 2. Multiplication (*) and division (/) next, left-to-right associativity.
@@ -118,7 +214,7 @@ int main() {
 
 
 
-// Lesson 1.3: IF-ELSE - DECISIONS, NOT RANDOM CRAP
+// Lesson 1.5: IF-ELSE - DECISIONS, NOT RANDOM CRAP
 /*
 #include "stdio.h"
 
@@ -139,7 +235,7 @@ int main() {
 
 
 
-// Lesson 1.4: WHILE LOOP - UNTIL YOU'RE DONE, YOU PIG
+// Lesson 1.6: WHILE LOOP - UNTIL YOU'RE DONE, YOU PIG
 /*
 #include "stdio.h"
 
@@ -160,7 +256,7 @@ int main() {
 
 
 
-// Lesson 1.5: FOR LOOP - REPEAT WITHOUT BEING A LOOP IDIOT
+// Lesson 1.7: FOR LOOP - REPEAT WITHOUT BEING A LOOP IDIOT
 /*
 #include "stdio.h"
 
@@ -179,7 +275,7 @@ int main() {
 
 
 
-// Lesson 1.6: GETCHAR, PUTCHAR, EOF
+// Lesson 1.8: GETCHAR, PUTCHAR, EOF
 /*
 #include "stdio.h"
 
@@ -199,7 +295,7 @@ int main() {
 
 
 
-// Lesson 1.7: SCANF - READ INPUT, DON'T HARDWIRE EVERYTHING
+// Lesson 1.9: SCANF - READ INPUT, DON'T HARDWIRE EVERYTHING
 /*
 #include "stdio.h"
 
@@ -217,44 +313,8 @@ int main() {
 
 
 
-// Lesson 1.8: ARRAYS - LISTS OF STUFF, DON'T OVERFLOW YOU MORON (Restructured: 
-// Manual Loop-Zero First, Then Concise)
 
-// Truth bomb: Local arrays spawn as garbage. Manual loop teaches pain; {0} is 
-// the shortcut for sane people.
-
-// Step 1: Manually zero the array (feel the burn). 
-// Step 2: Concisely zero the array {0}. 
-/*
-#include "stdio.h"
-
-int main() {
-    int i;
-
-    // Manual zero: tedious, but you learn.
-    int marr[5];
-    for (i = 0; i < 5; i++) marr[i] = 0;
-    printf("Manually zeroed array: ");
-    for (i = 0; i < 5; i++) printf("%d ", marr[i]);
-    printf("\n");
-
-    // Concise zero: {0} does the job.
-    int carr[5] = {0};
-    printf("Concisely zeroed array: ");
-    for (i = 0; i < 5; i++) printf("%d ", carr[i]);
-    printf("\n");
-
-    return 0;
-}
-*/
-
-
-
-
-
-
-
-// Lesson 1.9: FUNCTIONS - Reuse code, skip copy-paste crap.
+// Lesson 1.10: FUNCTIONS - Reuse code, skip copy-paste crap.
 // Globals: Visible everywhere, avoid like plague.
 // Locals: Function/block scope only.
 // Constants: Use #define or const, no magic numbers.
