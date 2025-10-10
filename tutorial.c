@@ -70,8 +70,6 @@ int main() {
                                // assumption of double.
     double d = 3.1415926535;   // Double-precision for more accuracy.
 
-    // ASCII: 7-bit standard (0-127) for basics like letters, digits, punctuation.
-    // Extended ASCII: 8-bit (0-255) for extras like accented letters
     char c = 'L';              // 1 byte, ASCII 'L' (76 decimal).
     // Equivalent:
     char c2 = 76;
@@ -123,19 +121,24 @@ int main() {
     int (*func_ptr)(void) = main; // Pointer to the main function 
 
     // Struct: derived from multiple basics
+    // sizeof(struct) is the sum of all members plus padding (padding is the
+    // unused allocated space of a complete type.
     struct Person {
         char name[20];
         int age;
         float height;
     } torvalds = {"Linus Torvalds", 55, 5.11f};  // Init.
 
-    // Union: shares the same memory for all members
+    // Union: shares the same memory for all members. 
+    // sizeof(union) == size of its largest member, which makes it
+    // significantly leaner and meaner than structs
     union Data {
         int i;
         float f;
     } u;
     // Store an integer in the union
     u.i = 42;
+
     return 0;
 }
 */
