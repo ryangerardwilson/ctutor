@@ -106,8 +106,8 @@ int main() {
 
 int main() {
     // Array: A contiguous block of the same complete type
-    // Derived from char
-    char name[10] = "Linus";   
+    // Stings are arrays derived from chars, the stdlib assumes this set up 
+    char name[10] = "Linus";  // Ascii bytes: L,i,n,u,s,\0,\0,\0,\0,\0 
     // Derived from int
     int numbers[5] = {1, 2, 3, 4, 5};
     // Derived from float
@@ -284,7 +284,19 @@ int main() {
 
 int main() {
     int c;
-    printf("Type text, Ctrl+D to end:\n");
+	// Hitting Ctrl+D in the terminal, inputs EOT (ASCII 4). However, the 
+	// Unix Kernel's terminal driver, doesn't pass EOT to your program, 
+	// instead it does one of the following:
+	// - if you hit Ctrl+D after typing something (no EOF): it simply flushes 
+	//   the input buffer to stdin, and the below loop continues.
+	// - if you hit Ctrl+D without typing anything/ after starting a new line
+	//   with Enter (EOT triggers EOF): it flushes any buffer, and makes the 
+	//   next read() call on stdin return 0 bytes - which stdin interprets as 
+	//   EOF
+    printf("Type text, Ctrl+D to flush buffer"); // also try: Enter, Ctrl+D
+
+	// EOF is not a character, but a macro defined in stdio.h as -1. And it's
+	// what getchar() spits back when there's no more input to read
     while ((c = getchar()) != EOF) {
         putchar(c);
     }
