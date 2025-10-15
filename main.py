@@ -1,23 +1,15 @@
 #!/usr/bin/env python3
-# ~/Apps/ctutor/main.py
-# Yeah, because why the fuck not keep it in Python? It's a wrapper, not the goddamn program itself.
-# This is the no-bullshit launcher for your C boot camp. It copies tutorial.c to a temp file,
-# fires up vim (because nano is for pussies who can't handle real editors), lets you hack away,
-# then reminds you to compile and run that crap yourself. No hand-holding—gcc it or die trying.
-# Run this: python main.py, edit, save, then in terminal: gcc temp.c -o temp && ./temp.
-# Errors? Fix your shit. Segfaults? Welcome to C, moron.
-
 import tempfile
 import subprocess
 import os
 import shutil
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
-tutorial_path = os.path.join(script_dir, "tutorial.c")
+tutorial_path = os.path.join(script_dir, "tutorial.md")
 
 if not os.path.exists(tutorial_path):
     print(
-        f"No tutorial.c in {script_dir}? What kind of half-assed clusterfuck setup is this? Clone the damn repo properly or GTFO."
+        f"No tutorial.md in {script_dir}? What kind of half-assed clusterfuck setup is this? Clone the damn repo properly or GTFO."
     )
     exit(1)
 
@@ -28,7 +20,7 @@ with open(tutorial_path, "r", encoding="utf-8") as f:
 def main():
     # Copy to temp so you can screw it up royally without mercy. Fresh start every goddamn time.
     with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".c", encoding="utf-8", delete=False
+        mode="w", suffix=".md", encoding="utf-8", delete=False
     ) as tmp:
         tmp.write(original_content)
         temp_file = tmp.name
