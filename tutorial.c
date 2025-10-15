@@ -6,7 +6,7 @@ This is a no-bullshit C tutor ripped off from that VimTutor insanity, but for C
 newbies who think 'printf("hello");' is some quantum entanglement bullshit.
 Cooked up because stock tutorials make me want to hurl my keyboard at the wall
 with their pussyfooting crap. We're sticking to K&R
-    
+
 Chapter 1: the absolute basics you'll actually use without your code
 segfaulting into the abyss. Variables, types, printf/scanf, loops,
 conditionals, arrays, functions—nothing fancy, just enough to not be a complete
@@ -15,7 +15,7 @@ blanks as told, save, then from terminal: gcc this_file.c -o ctutor && ./ctutor
 to see if you're not a total moron. It'll compile and run only the uncommented
 parts, spitting output or errors (errors mean you fucked up—fix it, don't
 whine).
-    
+
 Each run starts fresh if you copy from original, but hack around or die bored.
 Takes 30-45 mins if you're not drooling on your keyboard. Make a copy to trash;
 this one's your boot camp. Type the code, compile, feel the pain—or just read
@@ -54,8 +54,8 @@ terminal. Let's make you not a C poser.
 */
 
 // =============================================================================
-// PART I: CONVENTIONAL CORE OF C
-// ============================================================================= 
+// PART I: CONVENTIONAL CORE AND CERTAIN EXTENDED CONCEPTS
+// =============================================================================
 
 // Lesson 1.1: BASIC DATA TYPES, AND THEIR QUALIFIERS
 /*
@@ -63,9 +63,10 @@ terminal. Let's make you not a C poser.
 
 int main() {
 
-    // 1. The 4 Complete Basic Data Types --------------------------------------
+    // I. Conventional Core ==================================================
+    // The 4 Complete Basic Data Types --------------------------------------
     // Compiler allocates memory based on type declaration.
-    int i = 1337;              // Natural int, 32/64 bits 
+    int i = 1337;              // Natural int, 32/64 bits
     float f = 3.14f;           // Single-precision; 'f' suffix prevents default
                                // assumption of double.
     double d = 3.1415926535;   // Double-precision for more accuracy.
@@ -74,17 +75,19 @@ int main() {
     // Equivalent:
     char c2 = 76;
 
+    // II. Extension =====================================================
     // Qualifiers: short (16 bits), long (64 bits), signed (default), unsigned.
     short s = -32768;
     long l = 9223372036854775807L;
     long double ld = 3.14159265358979323846L;
     unsigned int ui = 4294967295;  // Prevents negative values.
 
-    // Best practice: Use unsigned char for extended ASCII to avoid signed negatives.
-    signed char sc = 128;      // Equals -128 due to two's complement.
+    // Best practice: Use unsigned char for extended ASCII to avoid signed
+        // negatives.
+        signed char sc = 128;      // Equals -128 due to two's complement.
     unsigned char uc = 128;    // Stays 128.
 
-    // 2. Void: The Only Incomplete Basic Data Type ----------------------------
+    // 2. Void: The Only Incomplete Basic Data Type ------------------------
     // Void means "no type", no memory; incomplete since types need >=1 byte,
     // as per the C Memory Model.
     void *void_pointer = &i;   // Generic pointer: holds any address no matter
@@ -94,31 +97,28 @@ int main() {
 }
 */
 
-
-
-
-
-
-
-// Lesson 1.2: DERIVED DATA TYPES 
+// Lesson 1.2: DERIVED DATA TYPES
 /*
-#include "stdio.h"  
+#include "stdio.h"
 
 int main() {
+
+        // I. Conventional Core =============================================
     // Array: A contiguous block of the same complete type
-    // Stings are arrays derived from chars, the stdlib assumes this set up 
-    char name[10] = "Linus";  // Ascii bytes: L,i,n,u,s,\0,\0,\0,\0,\0 
+    // Stings are arrays derived from chars, the stdlib assumes this set up
+    char name[10] = "Linus";  // Ascii bytes: L,i,n,u,s,\0,\0,\0,\0,\0
     // Derived from int
     int numbers[5] = {1, 2, 3, 4, 5};
     // Derived from float
     float decimals[4] = {3.14, 2.718, 1.618, 0.577};
 
+        // II. Extension ====================================================
     // Pointer: Variable holding the address of a type
     // Derived from int
     int x = 42;
     int *p = &x;               // Pointer to int. *p == 42.
     // Derived from function type
-    int (*func_ptr)(void) = main; // Pointer to the main function 
+    int (*func_ptr)(void) = main; // Pointer to the main function
 
     // Struct: derived from multiple basics
     // sizeof(struct) is the sum of all members plus padding (padding is the
@@ -129,7 +129,7 @@ int main() {
         float height;
     } torvalds = {"Linus Torvalds", 55, 5.11f};  // Init.
 
-    // Union: shares the same memory for all members. 
+    // Union: shares the same memory for all members.
     // sizeof(union) == size of its largest member, which makes it
     // significantly leaner and meaner than structs
     union Data {
@@ -143,58 +143,50 @@ int main() {
 }
 */
 
-
-
-
-
-
-
 // Lesson 1.3: FORMATTING WITH PRINTF
 /*
-#include "stdio.h"  
+#include "stdio.h"
 
 int main() {
-    char name[10] = "Linus";
+
+    // I. Conventional Core ==============================================
+        char name[10] = "Linus";
     int age = 55;
     float height = 5.11f;
     double pi = 3.14159;
     long net_worth = 1000000000000L;
 
-    // %s for strings: null-terminated or segfault 
-    printf("Name: %s\n", name);         
+    // %s for strings: null-terminated or segfault
+    printf("Name: %s\n", name);
     // %d for decimal integers.
-    printf("Age: %d\n", age);           
+    printf("Age: %d\n", age);
     // Minimum width 3, pads with spaces. Useful for alignment.
-    printf("Width: %3d\n", age);        
+    printf("Width: %3d\n", age);
     // %f for floats, default 6 decimal places--ugly as sin.
-    printf("Height: %f\n", height);     
+    printf("Height: %f\n", height);
     // Precision: 2 digits after decimal.
-    printf("Prec: %.2f\n", height);    
+    printf("Prec: %.2f\n", height);
+
+    // II. Extension ===================================================
     // Width 6, precision 2. Combines 'em.
-    printf("Full: %6.2f\n", height);    
+    printf("Full: %6.2f\n", height);
     // Doubles use %lf, not %f--man page says so, ignore at your peril.
-    printf("Pi: %lf\n", pi);           
+    printf("Pi: %lf\n", pi);
     // %ld for longs, because big numbers deserve respect.
-    printf("Worth: %ld\n", net_worth);  
+    printf("Worth: %ld\n", net_worth);
 
     return 0;
 }
 */
-
-
-
-
-
-
 
 // Lesson 1.4: BASIC ARITHMETIC EXPRESSIONS
 // In C, operators have a strict order of precedence (like most sane languages):
 // 1. Parentheses () override everything—evaluate inside first.
 // 2. Multiplication (*) and division (/) next, left-to-right associativity.
 // 3. Addition (+) and subtraction (-) last, also left-to-right.
-// No parentheses? The compiler doesn't care about your "natural" order; it follows this hierarchy.
-// Example: Compute 2 * (2 + 3) / 4.0 - 1
-// Step-by-step (with floats for precision):
+// No parentheses? The compiler doesn't care about your "natural" order; it
+// follows this hierarchy. Example: Compute 2 * (2 + 3) / 4.0 - 1 Step-by-step
+// (with floats for precision):
 // - First: 2 + 3 = 5
 // - Then: 5 / 4.0 = 1.25
 // - Then: 2 * 1.25 = 2.5
@@ -203,19 +195,12 @@ int main() {
 #include "stdio.h"
 
 int main() {
-    double result;  
-    result = 2 * (2 + 3) / 4.0 - 1; 
+    double result;
+    result = 2 * (2 + 3) / 4.0 - 1;
     printf("%f\n", result);
     return 0;
 }
 */
-
-
-
-
-
-
-
 
 // Lesson 1.5: IF-ELSE - DECISIONS, NOT RANDOM CRAP
 /*
@@ -232,12 +217,6 @@ int main() {
 }
 */
 
-
-
-
-
-
-
 // Lesson 1.6: WHILE LOOP - UNTIL YOU'RE DONE, YOU PIG
 /*
 #include "stdio.h"
@@ -248,16 +227,10 @@ int main() {
     while (s[i] != '\0') {
         i++;
     }
-    printf("Length: %d\n", i);  
+    printf("Length: %d\n", i);
     return 0;
 }
 */
-
-
-
-
-
-
 
 // Lesson 1.7: FOR LOOP - REPEAT WITHOUT BEING A LOOP IDIOT
 /*
@@ -266,17 +239,11 @@ int main() {
 int main() {
     int i;
     for (i = 0; i < 10; i++) {
-        printf("%d\n", i * i);  
+        printf("%d\n", i * i);
     }
     return 0;
 }
 */
-
-
-
-
-
-
 
 // Lesson 1.8: GETCHAR, PUTCHAR, EOF
 /*
@@ -284,31 +251,29 @@ int main() {
 
 int main() {
     int c;
-	// Hitting Ctrl+D in the terminal, inputs EOT (ASCII 4). However, the 
-	// Unix Kernel's terminal driver, doesn't pass EOT to your program, 
-	// instead it does one of the following:
-	// - if you hit Ctrl+D after typing something (no EOF): it simply flushes 
-	//   the input buffer to stdin, and the below loop continues.
-	// - if you hit Ctrl+D without typing anything/ after starting a new line
-	//   with Enter (EOT triggers EOF): it flushes any buffer, and makes the 
-	//   next read() call on stdin return 0 bytes - which stdin interprets as 
-	//   EOF
+        // Hitting Ctrl+D in the terminal, inputs EOT (ASCII 4). However, the
+        // Unix Kernel's terminal driver, doesn't pass EOT to your program,
+        // instead it does one of the following:
+        // - if you hit Ctrl+D after typing something (no EOF): it simply
+flushes
+        //   the input buffer to stdin, and the below loop continues.
+        // - if you hit Ctrl+D without typing anything/ after starting a new
+line
+        //   with Enter (EOT triggers EOF): it flushes any buffer, and makes the
+        //   next read() call on stdin return 0 bytes - which stdin interprets
+as
+        //   EOF
     printf("Type text, Ctrl+D to flush buffer"); // also try: Enter, Ctrl+D
 
-	// EOF is not a character, but a macro defined in stdio.h as -1. And it's
-	// what getchar() spits back when there's no more input to read
+        // EOF is not a character, but a macro defined in stdio.h as -1. And
+it's
+        // what getchar() spits back when there's no more input to read
     while ((c = getchar()) != EOF) {
         putchar(c);
     }
     return 0;
 }
 */
-
-
-
-
-
-
 
 // Lesson 1.9: SCANF - READ INPUT, DON'T HARDWIRE EVERYTHING
 /*
@@ -322,12 +287,6 @@ int main() {
     return 0;
 }
 */
-
-
-
-
-
-
 
 // Lesson 1.10: FUNCTIONS - Reuse code, skip copy-paste crap.
 // Globals: Visible everywhere, avoid like plague.
@@ -358,13 +317,6 @@ int main() {
     return 0;
 }
 */
-
-
-
-
-
-
-
 
 // =============================================================================
 // PART II: HIGH SEA - MAKING C LESS OF A PAIN FOR SCRIPTING
@@ -403,9 +355,9 @@ int main() {
     hs_file* f = hs_file_open("test.txt", HS_FILE_WRITE);
     if (!f) return 1;
 
-    hs_str* append_me = hs_str_new(" rules");  // No more direct char*, wrap it you lazy hack
-    hs_str_append(s, append_me);
-    hs_str_free(append_me);  // Or let hs_free_all do it, but don't leak like a sieve
+    hs_str* append_me = hs_str_new(" rules");  // No more direct char*, wrap it
+you lazy hack hs_str_append(s, append_me); hs_str_free(append_me);  // Or let
+hs_free_all do it, but don't leak like a sieve
 
     hs_list_append(l, s);
     hs_map_set(m, "key", s);
@@ -425,13 +377,7 @@ int main() {
 }
 */
 
-
-
-
-
-
-
-// Lesson 2.2: DEEP DIVE INTO HS_STR - STRINGS WITHOUT THE USUAL C CRAP 
+// Lesson 2.2: DEEP DIVE INTO HS_STR - STRINGS WITHOUT THE USUAL C CRAP
 
 // New from char*, append, concat (new str, now with count-variadic), get
 // char*/len, free. Dynamic resize, null-term'd. Prepend now takes hs_str*
@@ -448,21 +394,15 @@ int main(){
     hs_str *start = hs_str_new(ANSI_RED_START);
     hs_str *close = hs_str_new(ANSI_CLOSE);
 
-    // Concat now takes count first, then variadic hs_str*—count 'em right or die
-    hs_str* combined = hs_str_concat(3, start, middle, close);
-    printf("\n%s\n", hs_str_get(combined));
-    hs_str_free(combined);  // Don't forget, or hs_free_all at end
+    // Concat now takes count first, then variadic hs_str*—count 'em right or
+die hs_str* combined = hs_str_concat(3, start, middle, close); printf("\n%s\n",
+hs_str_get(combined)); hs_str_free(combined);  // Don't forget, or hs_free_all
+at end
 
     hs_free_all();
     return 0;
 }
 */
-
-
-
-
-
-
 
 // Lesson 2.3: DEEP DIVE INTO HS_LIST - LISTS THAT GROW, UNLIKE YOUR STATIC
 // ARRAYS New empty, append void*, get by index, len, free. Doesn't own
@@ -484,12 +424,6 @@ int main() {
 }
 */
 
-
-
-
-
-
-
 // Lesson 2.4: DEEP DIVE INTO HS_MAP - MAPS FOR KEY-VALUE WITHOUT REINVENTING
 // HASHES New empty, set string key to void*, get by key, free. Linear
 // search—fine for small. Dup's keys, doesn't own values.  Note: Keys are still
@@ -507,12 +441,6 @@ int main() {
     return 0;
 }
 */
-
-
-
-
-
-
 
 // Lesson 2.5: DEEP DIVE INTO HS_FILE - FILES WITHOUT FOPEN MODE BULLSHIT Open
 // with mode (READ/WRITE/APPEND), write hs_str, read_all to hs_str, close.
@@ -534,12 +462,6 @@ int main() {
 }
 */
 
-
-
-
-
-
-
 // Lesson 2.7: DEEP DIVE INTO HS_FREE_ALL - NUKE YOUR LEAKS, LAZY ASS
 // Tracks all hs allocs, frees 'em all. Call at end for script cleanup.
 /*
@@ -556,4 +478,3 @@ int main() {
     return 0;
 }
 */
-
